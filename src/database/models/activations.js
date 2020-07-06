@@ -1,7 +1,7 @@
 export default (sequelize, DataTypes) => {
   const Activation = sequelize.define('Activation', {
     id: {
-      allowNull: false,
+      autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER,
     },

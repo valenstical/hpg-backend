@@ -8,25 +8,28 @@ export default (sequelize, DataTypes) => {
     cc: {
       type: DataTypes.FLOAT,
     },
-    name: {
+    title: {
+      type: DataTypes.STRING,
+    },
+    short_title: {
       type: DataTypes.STRING,
     },
     image: {
       type: DataTypes.STRING,
     },
-    cartonUnits: {
+    carton_units: {
       type: DataTypes.INTEGER,
     },
-    categoryId: {
+    category_id: {
       type: DataTypes.INTEGER,
     },
-    shortDescription: {
+    short_description: {
       type: DataTypes.STRING,
     },
     color: {
       type: DataTypes.STRING,
     },
-    longDescription: {
+    long_description: {
       type: DataTypes.STRING,
     },
     highlights: {
@@ -38,22 +41,25 @@ export default (sequelize, DataTypes) => {
     ingredients: {
       type: DataTypes.STRING,
     },
-    createdAt: {
+    created_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
     },
-    updatedAt: {
+    updated_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
       onUpdate: sequelize.NOW,
     },
-  });
+  }, { underscored: true });
 
   Product.associate = (models) => {
-    Product.belongsTo(models.ProductCategory, {
-      foreignKey: 'categoryId',
+    Product.belongsTo(models.Category, {
+      foreignKey: 'category_id',
       targetKey: 'id',
       onDelete: 'CASCADE',
+    });
+    Product.hasMany(models.Prescription, {
+      foreignKey: 'product_code',
     });
   };
   return Product;

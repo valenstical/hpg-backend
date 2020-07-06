@@ -58,3 +58,7 @@ export const paginate = (query) => {
     page,
   };
 };
+
+export const notify = ({ product }) => {
+  //
+};

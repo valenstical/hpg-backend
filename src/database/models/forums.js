@@ -1,7 +1,7 @@
 export default (sequelize, DataTypes) => {
   const Forum = sequelize.define('Forum', {
     id: {
-      allowNull: false,
+      autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER,
     },

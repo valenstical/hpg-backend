@@ -1,29 +1,40 @@
 export default (sequelize, DataTypes) => {
   const Ailment = sequelize.define('Ailment', {
     id: {
-      allowNull: false,
+      autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    name: {
+    title: {
       type: DataTypes.STRING,
+      uniqueKey: true,
     },
     description: {
       type: DataTypes.STRING,
     },
-    externalUrl: {
+    instructions: {
       type: DataTypes.STRING,
     },
-    createdAt: {
+    external_url: {
+      type: DataTypes.STRING,
+    },
+    created_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
     },
-    updatedAt: {
+    updated_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
       onUpdate: sequelize.NOW,
     },
   });
+
+  Ailment.associate = (models) => {
+    Ailment.hasMany(models.Prescription, {
+      foreignKey: 'ailment_id',
+      as: 'prescriptions'
+    });
+  };
 
   return Ailment;
 };

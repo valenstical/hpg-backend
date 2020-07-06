@@ -1,23 +1,26 @@
 export default (sequelize, DataTypes) => {
-  const ProductCategory = sequelize.define('ProductCategory', {
+  const Category = sequelize.define('Category', {
     id: {
-      allowNull: false,
+      autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    name: {
+    title: {
       type: DataTypes.STRING,
     },
-    createdAt: {
+    display_title: {
+      type: DataTypes.STRING,
+    },
+    created_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
     },
-    updatedAt: {
+    updated_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
       onUpdate: sequelize.NOW,
     },
-  });
+  }, { underscored: true });
 
-  return ProductCategory;
+  return Category;
 };

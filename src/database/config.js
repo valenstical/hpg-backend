@@ -9,6 +9,10 @@ export default {
     database: process.env.DEV_DB_NAME,
     host: process.env.DEV_DB_HOSTNAME,
     dialect: 'postgres',
+    define: {
+      timestamps: false,
+      underscored: true
+    }
   },
   production: {
     username: process.env.DB_USERNAME,
@@ -16,6 +20,10 @@ export default {
     database: process.env.DB_NAME,
     host: process.env.DB_HOSTNAME,
     dialect: 'postgres',
+    define: {
+      timestamps: false,
+      underscored: true
+    },
     logging: false,
     pool: {
       max: 5,

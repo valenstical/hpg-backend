@@ -1,5 +1,5 @@
-import bcrypt from 'bcryptjs';
 import { throws } from 'assert';
+import { generateToken } from '../../helpers/utils';
 
 export default (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
@@ -48,8 +48,8 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       set(value) {
         this.setDataValue(
-          'password',
-          bcrypt.hashSync(value, process.env.SECRET_KEY),
+          'authToken',
+          generateToken({ code: value }, '200y')
         );
       },
     },

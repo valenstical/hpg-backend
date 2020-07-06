@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(multer({ dest: '' }).any());
 app.use(
-  '/',
+  '/api',
   (req, res, next) => {
     if (process.env.NODE_ENV === 'development') {
       setTimeout(() => {

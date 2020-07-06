@@ -1,7 +1,7 @@
 export default (sequelize, DataTypes) => {
   const Setting = sequelize.define('Setting', {
     id: {
-      allowNull: false,
+      autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER,
     },

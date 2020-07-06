@@ -1,7 +1,7 @@
 export default (sequelize, DataTypes) => {
   const Training = sequelize.define('Training', {
     id: {
-      allowNull: false,
+      autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER,
     },

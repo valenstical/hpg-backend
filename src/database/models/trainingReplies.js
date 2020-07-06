@@ -1,7 +1,7 @@
 export default (sequelize, DataTypes) => {
   const TrainingReply = sequelize.define('TrainingReply', {
     id: {
-      allowNull: false,
+      autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
@@ -13,6 +13,9 @@ export default (sequelize, DataTypes) => {
     },
     trainingId: {
       type: DataTypes.INTEGER,
+    },
+    isDeleted: {
+      type: DataTypes.BOOLEAN,
     },
     createdAt: {
       type: DataTypes.DATE,

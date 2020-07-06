@@ -1,42 +1,41 @@
 export default (sequelize, DataTypes) => {
   const Prescription = sequelize.define('Prescription', {
     id: {
-      allowNull: false,
+      autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    productCode: {
+    product_code: {
       type: DataTypes.STRING,
     },
-    description: {
+    dosage: {
       type: DataTypes.STRING,
     },
-    usage: {
-      type: DataTypes.STRING,
-    },
-    ailmentId: {
+    ailment_id: {
       type: DataTypes.INTEGER,
     },
-    createdAt: {
+    created_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
     },
-    updatedAt: {
+    updated_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
       onUpdate: sequelize.NOW,
     },
-  });
+  }, { underscored: true });
+
   Prescription.associate = (models) => {
     Prescription.belongsTo(models.Ailment, {
-      foreignKey: 'ailmentId',
+      foreignKey: 'ailment_id',
       targetKey: 'id',
       onDelete: 'CASCADE',
     });
     Prescription.belongsTo(models.Product, {
-      foreignKey: 'productCode',
+      foreignKey: 'product_code',
       targetKey: 'code',
       onDelete: 'CASCADE',
+      as: 'product'
     });
   };
   return Prescription;

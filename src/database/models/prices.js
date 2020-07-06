@@ -1,7 +1,7 @@
 export default (sequelize, DataTypes) => {
   const Price = sequelize.define('Price', {
     id: {
-      allowNull: false,
+      autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
