@@ -3,12 +3,12 @@ import { STATUS } from '../helpers/constants';
 import models from '../database/models';
 
 const {
-  Prescription, Product, Ailment
+  sequelize, Prescription, Product, Ailment
 } = models;
 export class AilmentController {
   static async getAll(request, response) {
     const {
-      model, where, order, raw
+      model, where, raw
     } = response.locals;
     const { page, limit, offset } = paginate(request.query);
     try {
@@ -16,7 +16,7 @@ export class AilmentController {
         limit,
         offset,
         where,
-        order,
+        order: [[sequelize.fn('lower', sequelize.col('title')), 'ASC']],
         include: [{
           model: Prescription,
           as: 'prescriptions',

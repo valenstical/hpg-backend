@@ -11,6 +11,9 @@ export default (sequelize, DataTypes) => {
     display_title: {
       type: DataTypes.STRING,
     },
+    priority: {
+      type: DataTypes.INTEGER,
+    },
     created_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
@@ -25,6 +28,7 @@ export default (sequelize, DataTypes) => {
   Category.associate = (models) => {
     Category.hasMany(models.Product, {
       foreignKey: 'category_id',
+      as: 'products',
     });
   };
   return Category;

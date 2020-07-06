@@ -11,6 +11,15 @@ export default (sequelize, DataTypes) => {
     country_code: {
       type: DataTypes.STRING,
     },
+    cc: {
+      type: DataTypes.FLOAT,
+    },
+    currency_iso: {
+      type: DataTypes.STRING,
+    },
+    currency_symbol: {
+      type: DataTypes.STRING,
+    },
     wholesale: {
       type: DataTypes.FLOAT,
     },

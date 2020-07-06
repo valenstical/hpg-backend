@@ -5,9 +5,6 @@ export default (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.STRING,
     },
-    cc: {
-      type: DataTypes.FLOAT,
-    },
     title: {
       type: DataTypes.STRING,
     },

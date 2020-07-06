@@ -1,14 +1,15 @@
+import fetch from 'node-fetch';
 import { Response, paginate } from '../helpers/utils';
 import { STATUS } from '../helpers/constants';
 import models from '../database/models';
 
 const {
-  Prescription, Category, Price
+  Category, Price, sequelize, Product
 } = models;
 export class ProductController {
   static async getAll(request, response) {
     const {
-      model, where, order
+      model, where
     } = response.locals;
     const { page, limit, offset } = paginate(request.query);
     try {
@@ -16,28 +17,31 @@ export class ProductController {
         limit,
         offset,
         where,
-        order,
+        order: [['priority', 'ASC']],
         include: [{
-          model: Category,
-          as: 'category',
+          model: Product,
+          as: 'products',
           required: false,
+          order: [[sequelize.fn('lower', sequelize.col('Product.title')), 'ASC']],
           attributes: {
             exclude: ['created_at', 'updated_at'],
           },
+          include: [
+            {
+              model: Price,
+              as: 'price',
+              required: false,
+              where: { country_code: request.params.countryCode || 'NGA' },
+              attributes: {
+                exclude: ['created_at', 'updated_at'],
+              },
+            }
+          ],
         },
-        {
-          model: Price,
-          as: 'price',
-          required: false,
-          where: { country_code: request.params.countryCode || 'NGA' },
-          attributes: {
-            exclude: ['created_at', 'updated_at'],
-          },
-        }
         ],
       };
 
-      const result = await models[model].findAndCountAll(data);
+      const result = await Category.findAndCountAll(data);
       return Response.send(
         response,
         STATUS.OK,
@@ -88,5 +92,21 @@ export class ProductController {
       return Response.send(response, STATUS.UNPROCESSED, [], 'Ailment with that title already exists', false);
     }
   }
+
+  static async getStatus(request, response) {
+    const { productCode, countryCode } = request.params;
+    try {
+      const res = await fetch(`https://shop.foreverliving.com/retail/shop/shopping.do?task=viewProductDetail&itemCode=${productCode}&store=${countryCode}`);
+      const html = await res.text();
+
+      const status = /OUT OF STOCK/ig.test(html);
+
+      Response.send(response, 200, !status, status ? 'OUT OF STOCK' : 'AVAILABLE', true);
+    } catch (error) {
+      console.log(error);
+      Response.send(response, STATUS.SERVER_ERROR, [], "Couldn't get product availability. Try again later.", true);
+    }
+  }
 }
+
 export default {};
