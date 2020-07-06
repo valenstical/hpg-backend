@@ -1,11 +1,8 @@
 import Random from 'random-int';
-import { Response, paginate, notify } from '../helpers/utils';
+import { Response, paginate } from '../helpers/utils';
 import { STATUS } from '../helpers/constants';
 import models from '../database/models';
 
-const {
-  Sequelize: { Op },
-} = models;
 export class CommonModelController {
   /**
    * Get all data
@@ -14,7 +11,9 @@ export class CommonModelController {
    * @param {function} next The next callback function
    */
   static async getAll(request, response) {
-    const { model, where, order } = response.locals;
+    const {
+      model, where, order, include
+    } = response.locals;
     const { page, limit, offset } = paginate(request.query);
     try {
       const result = await models[model].findAndCountAll({
@@ -22,6 +21,7 @@ export class CommonModelController {
         offset,
         where,
         order,
+        include: include || []
       });
       return Response.send(
         response,

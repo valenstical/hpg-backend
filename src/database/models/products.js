@@ -57,9 +57,14 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'category_id',
       targetKey: 'id',
       onDelete: 'CASCADE',
+      as: 'category'
     });
     Product.hasMany(models.Prescription, {
       foreignKey: 'product_code',
+    });
+    Product.hasMany(models.Price, {
+      foreignKey: 'product_code',
+      as: 'price'
     });
   };
   return Product;

@@ -5,13 +5,10 @@ export default (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    productCode: {
+    product_code: {
       type: DataTypes.STRING,
     },
-    currency: {
-      type: DataTypes.STRING,
-    },
-    countryId: {
+    country_code: {
       type: DataTypes.STRING,
     },
     wholesale: {
@@ -23,11 +20,11 @@ export default (sequelize, DataTypes) => {
     retail: {
       type: DataTypes.FLOAT,
     },
-    createdAt: {
+    created_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
     },
-    updatedAt: {
+    updated_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
       onUpdate: sequelize.NOW,
@@ -36,7 +33,7 @@ export default (sequelize, DataTypes) => {
 
   Price.associate = (models) => {
     Price.belongsTo(models.Product, {
-      foreignKey: 'productCode',
+      foreignKey: 'product_code',
       targetKey: 'code',
       onDelete: 'CASCADE',
     });
