@@ -21,7 +21,7 @@ export class ProductController {
         include: [{
           model: Product,
           as: 'products',
-          required: false,
+          required: true,
           order: [[sequelize.fn('lower', sequelize.col('Product.title')), 'ASC']],
           attributes: {
             exclude: ['created_at', 'updated_at'],
@@ -69,27 +69,65 @@ export class ProductController {
     }
   }
 
-  static async create(request, response) {
+  static async getList(request, response) {
+    const {
+      model, where
+    } = response.locals;
+    const { page, limit, offset } = paginate(request.query);
     try {
-      const { body } = request;
-      const { id } = body;
-      delete body.id;
+      const data = {
+        limit,
+        offset,
+        where,
+        order: [[sequelize.fn('lower', sequelize.col('Product.title')), 'ASC']],
+        attributes: {
+          exclude: ['created_at', 'updated_at'],
+        },
+        include: [{
+          model: Category,
+          as: 'category',
+          required: false,
+          attributes: {
+            exclude: ['created_at', 'updated_at'],
+          },
+        },
+        {
+          model: Price,
+          as: 'price',
+          required: false,
+          where: { country_code: request.params.countryCode || 'NGA' },
+          attributes: {
+            exclude: ['created_at', 'updated_at'],
+          },
+        }
+        ],
+      };
 
-      const result = id ? await Ailment.update(body, { where: { id }, returning: true })
-        : await Ailment.create(body);
-
-      const { prescriptions } = body;
-      if (prescriptions) {
-        prescriptions.forEach((prescription) => {
-          prescription.ailment_id = id || result.id;
-        });
-        await Prescription.bulkCreate(prescriptions, { updateOnDuplicate: ['dosage', 'product_code'] });
-      }
-
-      return Response.send(response, STATUS.CREATED, result.id, 'Save successful!', true);
+      const result = await Product.findAndCountAll(data);
+      return Response.send(
+        response,
+        STATUS.OK,
+        {
+          result: result.rows,
+          pagination: {
+            currentPage: +page,
+            lastPage: Math.ceil(result.count / limit),
+            currentCount: result.rows.length,
+            totalCount: result.count,
+          },
+        },
+        `${model}s fetched successfully`,
+        true,
+      );
     } catch (error) {
       console.log(error);
-      return Response.send(response, STATUS.UNPROCESSED, [], 'Ailment with that title already exists', false);
+      return Response.send(
+        response,
+        STATUS.SERVER_ERROR,
+        [],
+        'Server error, please try again.',
+        false,
+      );
     }
   }
 

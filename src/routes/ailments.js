@@ -8,13 +8,15 @@ import { filterCommonQuery } from '../middleware/filters';
 
 const router = express.Router();
 
+const raw = (req, res, next) => {
+  res.locals.raw = true;
+  next();
+};
+
 router.get(
   '/raw',
   filterCommonQuery,
-  (req, res, next) => {
-    res.locals.raw = true;
-    next();
-  },
+  raw,
   AilmentController.getAll
 );
 
@@ -26,9 +28,11 @@ router.get(
 
 router.post(
   '/',
-  [validateRequired('title'), validateOptional('description'), validateOptional('instructions'), validateOptionalUrl('external_url')],
+  [validateRequired('title'), validateOptionalUrl('external_url')],
   handleValidation,
   AilmentController.create,
+  raw,
+  AilmentController.getAll,
 );
 
 router.delete(

@@ -16,7 +16,7 @@ export class AilmentController {
         limit,
         offset,
         where,
-        order: [[sequelize.fn('lower', sequelize.col('title')), 'ASC']],
+        order: [[sequelize.fn('lower', sequelize.col('Ailment.title')), 'ASC']],
         include: [{
           model: Prescription,
           as: 'prescriptions',
@@ -64,7 +64,7 @@ export class AilmentController {
     }
   }
 
-  static async create(request, response) {
+  static async create(request, response, next) {
     try {
       const { body } = request;
       const { id } = body;
@@ -78,10 +78,12 @@ export class AilmentController {
         prescriptions.forEach((prescription) => {
           prescription.ailment_id = id || result.id;
         });
+
+        await Prescription.destroy({ where: { ailment_id: id || result.id } });
         await Prescription.bulkCreate(prescriptions, { updateOnDuplicate: ['dosage', 'product_code'] });
       }
-
-      return Response.send(response, STATUS.CREATED, result.id, 'Save successful!', true);
+      next();
+      // return Response.send(response, STATUS.CREATED, result.id, 'Save successful!', true);
     } catch (error) {
       console.log(error);
       return Response.send(response, STATUS.UNPROCESSED, [], 'Ailment with that title already exists', false);

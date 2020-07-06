@@ -5,13 +5,15 @@
   "main": "src/server.js",
   "scripts": {
     "start:dev": "NODE_ENV=development nodemon --exec babel-node src/server.js",
+    "start:prod": "NODE_ENV=production nodemon --exec babel-node src/server.js",
     "build": "babel src -d dist",
     "start": "node dist/server.js",
     "heroku-postbuild": "npm run build",
     "migrate": "sequelize db:migrate",
     "migrate:undo": "sequelize db:migrate:undo",
     "migrate:refresh": "sequelize db:migrate:undo:all",
-    "migrate:create": "sequelize migration:generate --name"
+    "migrate:create": "sequelize migration:generate --name",
+    "seed:products": "nodemon --exec babel-node src/seeds/products.js"
   },
   "repository": {
     "type": "git",
@@ -54,7 +56,8 @@
     "request-promise": "^4.2.5",
     "sequelize": "^5.22.2",
     "sequelize-cli": "^5.5.1",
-    "urlencode": "^1.1.0"
+    "urlencode": "^1.1.0",
+    "cheerio": "^1.0.0-rc.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.3",
