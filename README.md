@@ -1,2 +1,3 @@
 # hpg-backend
-Server for HPG mobile app
+
+Backend hpg app.
