@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-  const Task = sequelize.define('Task', {
+  const Center = sequelize.define('Center', {
     id: {
       autoIncrement: true,
       primaryKey: true,
@@ -8,13 +8,19 @@ export default (sequelize, DataTypes) => {
     title: {
       type: DataTypes.STRING,
     },
-    details: {
-      type: DataTypes.INTEGER,
+    address: {
+      type: DataTypes.STRING,
     },
-    user_code: {
-      type: DataTypes.INTEGER,
+    phone: {
+      type: DataTypes.STRING,
     },
-    due_time: {
+    email: {
+      type: DataTypes.STRING,
+    },
+    notes: {
+      type: DataTypes.STRING,
+    },
+    events: {
       type: DataTypes.STRING,
     },
     created_at: {
@@ -27,15 +33,5 @@ export default (sequelize, DataTypes) => {
       onUpdate: sequelize.NOW,
     },
   });
-
-  Task.associate = (models) => {
-    Task.belongsTo(models.User, {
-      foreignKey: 'user_code',
-      targetKey: 'user_code',
-      onDelete: 'CASCADE',
-      as: 'user'
-    });
-  };
-
-  return Task;
+  return Center;
 };

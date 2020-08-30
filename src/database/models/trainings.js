@@ -1,3 +1,8 @@
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en';
+
+TimeAgo.addLocale(en);
+
 export default (sequelize, DataTypes) => {
   const Training = sequelize.define('Training', {
     id: {
@@ -5,16 +10,21 @@ export default (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    image: {
+    image_url: {
       type: DataTypes.STRING,
+      get() {
+        const videoCode = this.getDataValue('video_code');
+        const imageUrl = this.getDataValue('image_url');
+        return imageUrl || `https://img.youtube.com/vi/${videoCode}/0.jpg`;
+      }
     },
     description: {
       type: DataTypes.STRING,
     },
-    video: {
+    video_code: {
       type: DataTypes.STRING,
     },
-    authorCode: {
+    user_code: {
       type: DataTypes.INTEGER,
     },
     category: {
@@ -26,11 +36,15 @@ export default (sequelize, DataTypes) => {
     views: {
       type: DataTypes.INTEGER,
     },
-    createdAt: {
+    created_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
+      get() {
+        const date = this.getDataValue('created_at');
+        return { date, time_elapsed: new TimeAgo().format(new Date(date)) };
+      }
     },
-    updatedAt: {
+    updated_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
       onUpdate: sequelize.NOW,
@@ -39,9 +53,10 @@ export default (sequelize, DataTypes) => {
 
   Training.associate = (models) => {
     Training.belongsTo(models.User, {
-      foreignKey: 'authorCode',
-      targetKey: 'code',
+      foreignKey: 'user_code',
+      targetKey: 'user_code',
       onDelete: 'CASCADE',
+      as: 'user'
     });
   };
 

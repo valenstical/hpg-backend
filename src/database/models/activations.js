@@ -5,14 +5,17 @@ export default (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    userCode: {
+    user_code: {
       type: DataTypes.INTEGER,
     },
-    createdAt: {
+    fbo_id: {
+      type: DataTypes.STRING,
+    },
+    created_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
     },
-    updatedAt: {
+    updated_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
       onUpdate: sequelize.NOW,
@@ -20,9 +23,10 @@ export default (sequelize, DataTypes) => {
   });
   Activation.associate = (models) => {
     Activation.belongsTo(models.User, {
-      foreignKey: 'userCode',
-      targetKey: 'code',
+      foreignKey: 'user_code',
+      targetKey: 'user_code',
       onDelete: 'CASCADE',
+      as: 'user'
     });
   };
   return Activation;

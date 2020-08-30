@@ -31,8 +31,10 @@ app.use(
   router,
 );
 
-app.listen(PORT, () => {
-  pingmydyno(process.env.SERVER_URL);
+app.listen(PORT, async () => {
+  if (process.env.NODE_ENV === 'production') {
+    pingmydyno(process.env.SERVER_URL);
+  }
 });
 
 export default app;

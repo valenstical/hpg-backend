@@ -1,6 +1,6 @@
 import express from 'express';
 import {
-  validateRequired, handleValidation, validateOptional, validateOptionalUrl, validateNumber
+  validateRequired, handleValidation, validateOptionalUrl, validateNumber
 } from '../middleware/validatorHelpers';
 import { CommonModelController } from '../controllers/commonModelController';
 import { AilmentController } from '../controllers/ailmentController';

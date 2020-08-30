@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-  const Task = sequelize.define('Task', {
+  const Autolink = sequelize.define('Autolink', {
     id: {
       autoIncrement: true,
       primaryKey: true,
@@ -8,13 +8,13 @@ export default (sequelize, DataTypes) => {
     title: {
       type: DataTypes.STRING,
     },
-    details: {
-      type: DataTypes.INTEGER,
+    description: {
+      type: DataTypes.STRING,
     },
-    user_code: {
-      type: DataTypes.INTEGER,
+    image_url: {
+      type: DataTypes.STRING,
     },
-    due_time: {
+    slug: {
       type: DataTypes.STRING,
     },
     created_at: {
@@ -27,15 +27,5 @@ export default (sequelize, DataTypes) => {
       onUpdate: sequelize.NOW,
     },
   });
-
-  Task.associate = (models) => {
-    Task.belongsTo(models.User, {
-      foreignKey: 'user_code',
-      targetKey: 'user_code',
-      onDelete: 'CASCADE',
-      as: 'user'
-    });
-  };
-
-  return Task;
+  return Autolink;
 };

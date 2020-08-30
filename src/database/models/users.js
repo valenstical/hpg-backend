@@ -1,31 +1,42 @@
-import { throws } from 'assert';
 import { generateToken } from '../../helpers/utils';
 
 export default (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
-    code: {
+    user_code: {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    fboId: {
+    fbo_id: {
       allowNull: false,
       type: DataTypes.STRING,
     },
     level: {
       type: DataTypes.STRING,
     },
-    firebaseToken: {
+    firebase_token: {
       type: DataTypes.STRING,
     },
-    sponsorId: {
+    sponsor_id: {
       type: DataTypes.STRING,
     },
-    firstName: {
+    first_name: {
       type: DataTypes.STRING,
+      set(value) {
+        this.setDataValue(
+          'first_name',
+          value.toLowerCase()
+        );
+      },
     },
-    lastName: {
+    last_name: {
       type: DataTypes.STRING,
+      set(value) {
+        this.setDataValue(
+          'last_name',
+          value.toLowerCase()
+        );
+      },
     },
     email: {
       type: DataTypes.STRING,
@@ -35,45 +46,41 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       unique: true,
     },
-    image: {
+    image_url: {
       type: DataTypes.STRING,
     },
-    stateId: {
+    state_code: {
       type: DataTypes.STRING,
     },
-    countryId: {
+    country_code: {
       type: DataTypes.STRING,
     },
-    authToken: {
+    auth_token: {
       type: DataTypes.STRING,
       set(value) {
         this.setDataValue(
-          'authToken',
-          generateToken({ code: value }, '200y')
+          'auth_token',
+          generateToken({ user_code: value }, '200y')
         );
       },
     },
-    appActivated: {
+    is_admin: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    isAdmin: {
+    is_editor: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    isActive: {
+    is_blocked: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    isBlocked: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-    },
-    createdAt: {
+    created_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
     },
-    updatedAt: {
+    updated_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
       onUpdate: sequelize.NOW,
@@ -93,13 +100,10 @@ export default (sequelize, DataTypes) => {
         where: {
           [column]: value,
         },
-        attributes: {
-          exclude: ['password'],
-        },
       });
       result = dataValues;
     } catch (error) {
-      throws(error);
+      console.error(error);
     }
     return result;
   };

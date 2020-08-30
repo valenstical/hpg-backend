@@ -1,4 +1,3 @@
-import Random from 'random-int';
 import { Response, paginate } from '../helpers/utils';
 import { STATUS } from '../helpers/constants';
 import models from '../database/models';
@@ -10,35 +9,43 @@ export class CommonModelController {
    * @param {object} response The response object
    * @param {function} next The next callback function
    */
-  static async getAll(request, response) {
+  static async getAll(request, response, next) {
     const {
-      model, where, order, include
+      model, where, order, include, attributes, redirect
     } = response.locals;
     const { page, limit, offset } = paginate(request.query);
     try {
-      const result = await models[model].findAndCountAll({
+      const data = await models[model].findAndCountAll({
         limit,
         offset,
         where,
         order,
-        include: include || []
+        include: include || [],
+        attributes,
+        raw: true
       });
-      return Response.send(
-        response,
-        STATUS.OK,
-        {
-          result: result.rows,
-          pagination: {
-            currentPage: +page,
-            lastPage: Math.ceil(result.count / limit),
-            currentCount: result.rows.length,
-            totalCount: result.count,
-          },
+      const result = {
+        result: data.rows,
+        pagination: {
+          currentPage: +page,
+          lastPage: Math.ceil(data.count / limit),
+          currentCount: data.rows.length,
+          totalCount: data.count,
         },
-        `${model}s fetched successfully`,
-        true,
-      );
+      };
+      if (!redirect) {
+        return Response.send(
+          response,
+          STATUS.OK,
+          result,
+          `${model}s fetched successfully`,
+          true,
+        );
+      }
+      response.locals.result = result;
+      next();
     } catch (error) {
+      console.error(error);
       return Response.send(
         response,
         STATUS.SERVER_ERROR,
@@ -75,11 +82,6 @@ export class CommonModelController {
     }
   }
 
-  static addCollegeId(request) {
-    const { collegeId } = request.query;
-    return collegeId ? { collegeId } : {};
-  }
-
   /**
    * Add a new data
    * @param {object} request The request object
@@ -96,28 +98,6 @@ export class CommonModelController {
       console.log(error);
       return Response.send(response, STATUS.UNPROCESSED, [], `${model} already exists.`, false);
     }
-  }
-
-  /**
-   * Add multiple advisors
-   * @param {object} request The request object
-   * @param {object} response The response object
-   * @param {function} next The next callback function
-   */
-  static async createAdvisors(request, response, next) {
-    const { collegeId } = response.locals;
-    try {
-      const { advisors } = request.body;
-      const data = advisors.map((item) => ({
-        name: item,
-        id: Random(1000000, 9999999),
-        collegeId,
-      }));
-      await models.Advisor.bulkCreate(data);
-    } catch (error) {
-      // TODO
-    }
-    next();
   }
 
   /**

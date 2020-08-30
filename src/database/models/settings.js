@@ -5,17 +5,17 @@ export default (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    activeCC: {
+    active_cc: {
       type: DataTypes.FLOAT,
     },
-    ccDueDate: {
+    cc_due_date: {
       type: DataTypes.INTEGER,
     },
-    createdAt: {
+    created_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
     },
-    updatedAt: {
+    updated_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
       onUpdate: sequelize.NOW,

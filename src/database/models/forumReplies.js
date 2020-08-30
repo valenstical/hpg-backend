@@ -1,3 +1,8 @@
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en';
+
+TimeAgo.addLocale(en);
+
 export default (sequelize, DataTypes) => {
   const ForumReply = sequelize.define('ForumReply', {
     id: {
@@ -5,23 +10,27 @@ export default (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    message: {
+    title: {
       type: DataTypes.STRING,
     },
-    authorCode: {
+    user_code: {
       type: DataTypes.INTEGER,
     },
-    forumId: {
+    forum_id: {
       type: DataTypes.INTEGER,
     },
-    isDeleted: {
+    is_deleted: {
       type: DataTypes.BOOLEAN,
     },
-    createdAt: {
+    created_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
+      get() {
+        const date = this.getDataValue('created_at');
+        return { date, time_elapsed: new TimeAgo().format(new Date(date)) };
+      }
     },
-    updatedAt: {
+    updated_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
       onUpdate: sequelize.NOW,
@@ -30,13 +39,14 @@ export default (sequelize, DataTypes) => {
 
   ForumReply.associate = (models) => {
     ForumReply.belongsTo(models.Forum, {
-      foreignKey: 'forumId',
+      foreignKey: 'forum_id',
       targetKey: 'id',
       onDelete: 'CASCADE',
+      as: 'forum'
     });
     ForumReply.belongsTo(models.User, {
-      foreignKey: 'authorCode',
-      targetKey: 'code',
+      foreignKey: 'user_code',
+      targetKey: 'user_code',
       onDelete: 'CASCADE',
     });
   };

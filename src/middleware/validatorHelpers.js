@@ -62,6 +62,12 @@ export const validateEmail = (field = 'email', message = 'Enter a valid email ad
   .isEmail()
   .withMessage(message);
 
+export const validateOptionalEmail = (field = 'email', message = 'Enter a valid email address') => body(field)
+  .trim()
+  .optional()
+  .isEmail()
+  .withMessage(message);
+
 export const validateComparison = (field1, field2, message = 'Passwords do not match.') => [
   body(field1)
     .not()

@@ -3,16 +3,19 @@ import { ProductController } from '../controllers/productController';
 
 const router = express.Router();
 
-router.get('/', ProductController.getAll,);
+// Get all products directly
+router.get('/list/:countryCode', ProductController.getList);
 
-router.get('/list', ProductController.getList,);
+// Get all product categories
+router.get('/categories', ProductController.getCategories);
 
-router.get('/:countryCode', ProductController.getAll,);
+// Get all products group by category
+router.get('/group/:countryCode', ProductController.getByCategory);
 
-router.get('/:productCode/status/:countryCode', ProductController.getStatus);
+// Get product status
+router.get('/status/:productCode/:countryCode', ProductController.getStatus);
 
-router.get('/seed', (req, res, next) => {
-
-});
+// Get all price list types
+router.get('/pricetypes', ProductController.getPriceTypes);
 
 export default router;

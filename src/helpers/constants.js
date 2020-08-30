@@ -9,26 +9,6 @@ export const STATUS = {
   SERVER_ERROR: 500,
 };
 
-export const TRANSACTION = {
-  STATUS: ['Pending', 'Success', 'Canceled'],
-  OPTION: ['Internal Transfer', 'Inter-bank Transfer'],
-  TYPE: ['Debit', 'Credit'],
-
-  STATUS_PENDING: 0,
-  STATUS_SUCCESS: 1,
-  STATUS_CANCELED: 2,
-
-  TYPE_DEBIT: 0,
-  TYPE_CREDIT: 1,
-
-  OPTION_INTERNAL: 0,
-  OPTION_INTERBANK: 1,
-};
-
-export const ACCOUNT_PREFIX = '00';
-export const GENDER = ['Male', 'Female'];
-export const ACCOUNT_TYPE = ['Savings', 'Current', 'Fixed Deposit'];
-
 export const MESSAGE = {
   SERVER_ERROR:
     'An internal error has occured. This is not your fault. We are working to fix this problem. Please try again later.',
@@ -46,15 +26,12 @@ export const MESSAGE = {
   FAILURE_MESSAGE: 'Operation failed',
 };
 
-export const CITIES = [
-  'Abuja',
-  'Warri',
-  'Enugu',
-  'Kaduna',
-  'Ikeja',
-  'Ekpoma',
-  'Auchi',
-  'Bariga',
-];
+export const MEDIA_TYPES = {
+  VIDEO: 'video',
+  IMAGE: 'image',
+  PDF: 'pdf',
+  PRESENTATION: 'presentation',
+  OTHERS: 'others'
+};
 
 export default {};
