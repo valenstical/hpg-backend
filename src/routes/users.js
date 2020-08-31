@@ -20,8 +20,6 @@ router.get(
   '/status',
   validateFBO,
   validateToken,
-  [validateRequired('fbo_id'), validateRequired('country_code')],
-  handleValidation,
   UserModelController.getStatus
 );
 
@@ -30,8 +28,6 @@ router.get(
 router.get(
   '/activations',
   validateFBO,
-  [validateRequired('fbo_id')],
-  handleValidation,
   UserModelController.getActivations,
 );
 
@@ -44,19 +40,14 @@ router.post(
   UserModelController.verifyUser,
 );
 
-// [DONE] Activates a user. Insert into activation, update firebase_token and return user detais.
 router.post(
   '/activate',
   validateFBO,
-  validateToken,
-  [validateRequired('fbo_id'), validateOptional('firebase_token'),
-  ],
+  [validateRequired('fbo_id'), validateEmail('email'), validateOptional('firebase_token')],
   handleValidation,
   UserModelController.activateUser,
 );
 
-/* [DONE] Activate/create user. Needs sponsor_id (optional).
-Will insert into activation. Return user details */
 router.post(
   '/',
   validateFBO,
@@ -65,14 +56,12 @@ router.post(
     validateRequired('first_name'),
     validateRequired('fbo_id'),
     validateRequired('country_code'),
-    validateOptional('state_code'),
-    validateRequired('level'),
     validateOptional('firebase_token'),
-    validateOptional('sponsor_id'),
     validateRequired('phone'),
     validateRequired('last_name'),
   ],
   handleValidation,
+  UserModelController.verifyUser,
   UserModelController.createUser,
 );
 

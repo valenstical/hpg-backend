@@ -8,19 +8,20 @@ const displayError = (response) => {
   Response.send(response, STATUS.UNATHORIZED, null, MESSAGE.UNATHORIZED_ACCESS, false);
 };
 
-const processToken = (authorization, response, next) => {
+const processToken = async (authorization, response, next) => {
   const token = authorization.split(' ')[1];
-  jwt.verify(token, process.env.SECRET_KEY, (error, value) => {
+  jwt.verify(token, process.env.SECRET_KEY, async (error, value) => {
     if (error || !value) return displayError(response);
-    response.locals.authValue = value;
+    const user = await models.User.getUser('user_code', value.user_code);
+    response.locals.authValue = { ...value, user };
     next();
   });
 };
 
-export const validateToken = (request, response, next) => {
+export const validateToken = async (request, response, next) => {
   const { authorization } = request.headers;
   if (!authorization) return displayError(response);
-  processToken(authorization, response, next);
+  await processToken(authorization, response, next);
 };
 
 export const validateEditor = async (request, response, next) => {
@@ -36,9 +37,8 @@ export const validateAdmin = async (request, response, next) => {
 };
 
 export const validateFBO = (request, response, next) => {
-  const { headers, body } = request;
-  console.log(encode(body.fbo_id));
-  if (body.fbo_id && headers.request_token === encode(body.fbo_id)) {
+  const { headers } = request;
+  if (headers.fbo_id && headers.request_token === encode(headers.fbo_id)) {
     next();
   } else {
     return displayError(response);

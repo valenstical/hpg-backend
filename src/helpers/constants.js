@@ -34,4 +34,31 @@ export const MEDIA_TYPES = {
   OTHERS: 'others'
 };
 
+export const COUNTRIES = [
+  {
+    label: 'Nigeria',
+    value: 'NGA'
+  },
+  {
+    label: 'Canada',
+    value: 'CAN'
+  },
+  {
+    label: 'United States of America',
+    value: 'USA'
+  },
+
+];
+
+export const LEVELS = ['Assistant Supervisor', 'Supervisor', 'Assistant Manager', 'Unrecognized Manager', 'Recognized Manage', 'Manager', 'Soaring Manager', 'Senior Manager', 'Sapphire Manager', 'Diamond Sapphire Manager', 'Diamond Manager', 'Double Diamond Manager', 'Triple Diamond Manager', 'Diamond Centurion Manager', 'Centurion Manager'];
+
+export const PRICE_TYPES = [
+  { id: 1, name: 'Wholesale' },
+  { id: 2, name: 'Retail' },
+  { id: 3, name: 'Novus' },
+  { id: 4, name: 'Assistant Supervisor(5%)' },
+  { id: 5, name: 'Supervisor (8%)' },
+  { id: 6, name: 'Assistant Manager (13%)' },
+  { id: 7, name: 'Manager (18%)', },
+];
 export default {};

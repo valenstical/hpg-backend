@@ -10,9 +10,9 @@ const router = express.Router();
 
 router.get(
   '/',
-  validateToken,
-  filterCommonQuery,
-  CommonModelController.getAll
+  // validateToken,
+  // filterCommonQuery,
+  CommonModelController.seedData
 );
 
 router.post(

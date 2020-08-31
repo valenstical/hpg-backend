@@ -49,6 +49,27 @@ router.post(
   ForumController.createReply,
 );
 
+// Get replies
+router.get(
+  '/replies',
+  validateToken,
+  [validateNumber('forum_id')],
+  setModel('ForumReply'),
+  (req, res, next) => {
+    res.locals.include = [
+      {
+        model: models.User,
+        as: 'user',
+        required: true,
+        attributes: ['level', 'first_name', 'last_name', 'image_url']
+      },
+    ];
+    next();
+  },
+  filterCommonQuery,
+  CommonModelController.getAll
+);
+
 // [DONE] Delete post
 router.delete(
   '/',

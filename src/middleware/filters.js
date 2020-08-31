@@ -10,9 +10,11 @@ export const filterCommonQuery = (request, response, next) => {
   const { order } = request.query;
   const columns = _.keys(models[model].rawAttributes);
   const where = _.pick(request.query, columns);
-  where.title = { [Op.iLike]: `%${where.title || ''}%` };
+  if (request.query.title) {
+    where.title = { [Op.iLike]: `%${where.title || ''}%` };
+  }
   response.locals.where = where;
-  response.locals.order = [_.split(order || 'title,ASC', ',')];
+  response.locals.order = [_.split(order || 'id,ASC', ',')];
   next();
 };
 

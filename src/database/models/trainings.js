@@ -1,5 +1,6 @@
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
+import { convertTimeLapsed } from '../../helpers/utils';
 
 TimeAgo.addLocale(en);
 
@@ -19,6 +20,13 @@ export default (sequelize, DataTypes) => {
       }
     },
     description: {
+      type: DataTypes.STRING,
+      get() {
+        const value = this.getDataValue('description').substr(0, 100);
+        return value.length >= 100 ? `${value}...` : value;
+      }
+    },
+    body: {
       type: DataTypes.STRING,
     },
     video_code: {
@@ -40,8 +48,7 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
       get() {
-        const date = this.getDataValue('created_at');
-        return { date, time_elapsed: new TimeAgo().format(new Date(date)) };
+        return convertTimeLapsed(this.getDataValue('created_at'));
       }
     },
     updated_at: {

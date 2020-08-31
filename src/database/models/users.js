@@ -68,7 +68,18 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    ban_message: {
+      type: DataTypes.STRING,
+    },
     is_editor: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    app_activated: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
+    is_active: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },

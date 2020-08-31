@@ -1,7 +1,4 @@
-import TimeAgo from 'javascript-time-ago';
-import en from 'javascript-time-ago/locale/en';
-
-TimeAgo.addLocale(en);
+import { convertTimeLapsed } from '../../helpers/utils';
 
 export default (sequelize, DataTypes) => {
   const Forum = sequelize.define('Forum', {
@@ -23,8 +20,7 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
       get() {
-        const date = this.getDataValue('created_at');
-        return { date, time_elapsed: new TimeAgo().format(new Date(date)) };
+        return convertTimeLapsed(this.getDataValue('created_at'));
       }
     },
     updated_at: {

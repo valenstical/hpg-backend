@@ -11,7 +11,7 @@ export default (sequelize, DataTypes) => {
     short_title: {
       type: DataTypes.STRING,
     },
-    image: {
+    image_url: {
       type: DataTypes.STRING,
     },
     carton_units: {

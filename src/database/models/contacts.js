@@ -1,23 +1,41 @@
 import { convertTimeLapsed } from '../../helpers/utils';
 
 export default (sequelize, DataTypes) => {
-  const ForumReply = sequelize.define('ForumReply', {
+  const Contact = sequelize.define('Contact', {
     id: {
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    title: {
+    name: {
+      type: DataTypes.STRING,
+    },
+    phone: {
+      type: DataTypes.STRING,
+    },
+    email: {
+      type: DataTypes.STRING,
+    },
+    notes: {
+      type: DataTypes.STRING,
+    },
+    tags: {
       type: DataTypes.STRING,
     },
     user_code: {
       type: DataTypes.INTEGER,
     },
-    forum_id: {
-      type: DataTypes.INTEGER,
+    fbo_id: {
+      type: DataTypes.STRING,
     },
-    is_deleted: {
-      type: DataTypes.BOOLEAN,
+    country: {
+      type: DataTypes.STRING,
+    },
+    source: {
+      type: DataTypes.STRING,
+    },
+    ip_address: {
+      type: DataTypes.STRING,
     },
     created_at: {
       type: DataTypes.DATE,
@@ -32,21 +50,5 @@ export default (sequelize, DataTypes) => {
       onUpdate: sequelize.NOW,
     },
   });
-
-  ForumReply.associate = (models) => {
-    ForumReply.belongsTo(models.Forum, {
-      foreignKey: 'forum_id',
-      targetKey: 'id',
-      onDelete: 'CASCADE',
-      as: 'forum'
-    });
-    ForumReply.belongsTo(models.User, {
-      foreignKey: 'user_code',
-      targetKey: 'user_code',
-      onDelete: 'CASCADE',
-      as: 'user',
-    });
-  };
-
-  return ForumReply;
+  return Contact;
 };

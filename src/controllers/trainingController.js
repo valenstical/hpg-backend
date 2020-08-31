@@ -7,7 +7,7 @@ export class TrainingController {
   static async createTraining(request, response) {
     const user_code = valueFromToken('user_code', response);
     try {
-      const body = _.pick(request.body, 'title', 'description', 'image_url', 'video_code', 'category', 'description');
+      const body = _.pick(request.body, 'title', 'body', 'description', 'image_url', 'video_code', 'category', 'description');
       body.user_code = user_code;
 
       const result = await models.Training.create(body);
@@ -40,7 +40,7 @@ export class TrainingController {
   static async updateTraining(request, response) {
     try {
       const user_code = valueFromToken('user_code', response);
-      const body = _.pick(request.body, 'title', 'description', 'image_url', 'video_code', 'category', 'description');
+      const body = _.pick(request.body, 'title', 'body', 'description', 'image_url', 'video_code', 'category', 'description');
       const result = await models.Training.update(body, { where: { user_code, id: request.body.id }, returning: true, raw: true });
       return Response.send(response, result[0] ? STATUS.OK : STATUS.UNATHORIZED, result[1].pop(), result[0] ? 'Training material updated' : "You can't update that training material.", true);
     } catch (error) {

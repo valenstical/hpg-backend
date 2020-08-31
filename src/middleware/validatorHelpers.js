@@ -106,3 +106,8 @@ export const setModel = (model) => (request, response, next) => {
   response.locals.model = model;
   next();
 };
+
+export const setRedirect = (request, response, next) => {
+  response.locals.redirect = true;
+  next();
+};

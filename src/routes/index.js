@@ -9,6 +9,7 @@ import centerRouter from './centers';
 import supportRouter from './supports';
 import mediaRouter from './media';
 import autolinksRouter from './autolinks';
+import contactsRouter from './contacts';
 
 import { Response } from '../helpers/utils';
 import { STATUS, MESSAGE } from '../helpers/constants';
@@ -26,6 +27,7 @@ router.use('/centers', setModel('Center'), centerRouter);
 router.use('/supports', setModel('Support'), supportRouter);
 router.use('/media', setModel('Media'), mediaRouter);
 router.use('/autolinks', setModel('Autolink'), autolinksRouter);
+router.use('/contacts', setModel('Contact'), contactsRouter);
 
 router.all('*', (request, response) => {
   Response.send(response, STATUS.NOT_FOUND, null, MESSAGE.NOT_FOUND, false);

@@ -36,6 +36,7 @@ router.post(
   [
     validateRequired('title'),
     validateRequired('description'),
+    validateOptional('body'),
     validateOptional('image_url'),
     validateOptional('video_code'),
     validateRequired('category'),
@@ -52,6 +53,7 @@ router.patch(
   [
     validateNumber('id'),
     validateRequired('title'),
+    validateOptional('body'),
     validateRequired('description'),
     validateOptional('image_url'),
     validateOptional('video_code'),

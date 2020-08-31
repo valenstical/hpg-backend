@@ -1,10 +1,10 @@
 import fetch from 'node-fetch';
 import { Response, paginate } from '../helpers/utils';
-import { STATUS } from '../helpers/constants';
+import { PRICE_TYPES, STATUS } from '../helpers/constants';
 import models from '../database/models';
 
 const {
-  Category, Price, sequelize, Product
+  Category, Price, sequelize, Product, Sequelize: { Op },
 } = models;
 
 const getTransformedProduct = (result) => result.map((item) => {
@@ -143,28 +143,25 @@ export class ProductController {
 
   static getPriceTypes(request, response) {
     Response.send(response, STATUS.OK,
-      [
-        { id: 1, name: 'Wholesale' },
-        { id: 2, name: 'Retail' },
-        { id: 3, name: 'Novus' },
-        { id: 4, name: 'Assistant Supervisor(5%)' },
-        { id: 5, name: 'Supervisor (8%)' },
-        { id: 6, name: 'Assistant Manager (13%)' },
-        { id: 7, name: 'Manager (18%)', },
-      ],
+      PRICE_TYPES,
       'Price list fetched.');
   }
 
   static async getList(request, response) {
     const {
-      model, where
+      where
     } = response.locals;
     const { page, limit, offset } = paginate(request.query);
     try {
       const data = {
         limit,
         offset,
-        where,
+        where: {
+          ...where,
+          image_url: {
+            [Op.ne]: null
+          }
+        },
         order: [[sequelize.fn('lower', sequelize.col('Product.title')), 'ASC']],
         attributes: {
           exclude: ['created_at', 'updated_at'],
@@ -196,11 +193,13 @@ export class ProductController {
       };
 
       const result = await Product.findAndCountAll(data);
+      const categories = await Category.findAll({ raw: true, order: [['priority', 'ASC']], });
+
       return Response.send(
         response,
         STATUS.OK,
         {
-          result: getTransformedProduct(result.rows),
+          result: { products: getTransformedProduct(result.rows), categories, pricetypes: PRICE_TYPES },
           pagination: {
             currentPage: +page,
             lastPage: Math.ceil(result.count / limit),
@@ -208,7 +207,7 @@ export class ProductController {
             totalCount: result.count,
           },
         },
-        `${model}s fetched successfully`,
+        'Products fetched successfully',
         true,
       );
     } catch (error) {

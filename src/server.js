@@ -23,7 +23,7 @@ app.use(
     if (process.env.NODE_ENV === 'development') {
       setTimeout(() => {
         next();
-      }, 0);
+      }, 500);
     } else {
       next();
     }

@@ -1,4 +1,5 @@
 {
-    "maven.view": "flat",
-    "npm-scripts.showStartNotification": false
+  "maven.view": "flat",
+  "npm-scripts.showStartNotification": false,
+  "editor.formatOnSave": false,
 }

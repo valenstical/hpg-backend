@@ -1,8 +1,11 @@
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
 import util from 'util';
-
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en';
 import { MESSAGE, STATUS } from './constants';
+
+TimeAgo.addLocale(en);
 
 export class Response {
   static send(
@@ -18,6 +21,12 @@ export class Response {
       message,
       status,
       timestamp: new Date().getTime(),
+      config: {
+        exchange_rate: 380,
+        version: process.env.VERSION,
+        message: process.env.UPDATE_MESSAGE,
+        url: process.env.UPDATE_URL
+      }
     });
   }
 
@@ -62,3 +71,5 @@ export const paginate = (query) => {
 export const notify = ({ product }) => {
   //
 };
+
+export const convertTimeLapsed = (dateString) => ({ dateString, time_elapsed: new TimeAgo().format(new Date(dateString)) });
